@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="referrer" content="no-referrer"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Checkout  Parveena Agarwal</title>
+<link rel="icon" type="image/png" href="https://www.nimishacreations.in/images/logo.png"/>
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--black:#0A0A0A;--white:#fff;--off:#F5F3EF;--gold:#B8960C;--gray:#6B6B6B;--lgray:#E8E8E8;--t:.25s ease;}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--white);color:var(--black);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+
+/* ANNOUNCEMENT BAR */
+.ann-bar{background:var(--black);color:rgba(255,255,255,.7);text-align:center;padding:10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;}
+.ann-bar a{color:rgba(255,255,255,.7);}
+
+/* NAV */
+.site-nav{background:var(--white);border-bottom:1px solid var(--lgray);position:sticky;top:0;z-index:100;}
+.nav-top{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:72px;}
+.nav-logo{display:flex;align-items:center;gap:12px;}
+.nav-logo img{width:48px;height:48px;border-radius:50%;object-fit:contain;}
+.nav-logo-text{line-height:1.2;}
+.nav-logo-brand{font-size:15px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--black);}
+.nav-logo-sub{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+.nav-icons{display:flex;align-items:center;gap:20px;}
+.nav-icons a,.nav-icon-btn{color:var(--black);background:none;border:none;cursor:pointer;font-size:13px;letter-spacing:.1em;text-transform:uppercase;}
+.nav-cats{border-top:1px solid var(--lgray);display:flex;justify-content:center;gap:0;}
+.nav-cat{padding:12px 24px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;position:relative;transition:color var(--t);}
+.nav-cat:hover{color:var(--gold);}
+.nav-cat.active{border-bottom:2px solid var(--black);}
+.cart-count{background:var(--black);color:var(--white);border-radius:50%;width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;margin-left:4px;vertical-align:middle;}
+
+/* BUTTONS */
+.btn{display:inline-block;padding:13px 32px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border:1px solid var(--black);background:var(--black);color:var(--white);font-family:inherit;transition:all var(--t);}
+.btn:hover{background:var(--white);color:var(--black);}
+.btn-outline{background:var(--white);color:var(--black);}
+.btn-outline:hover{background:var(--black);color:var(--white);}
+.btn-white{background:var(--white);color:var(--black);border-color:var(--white);}
+.btn-white:hover{background:transparent;color:var(--white);}
+
+/* PRODUCT CARD  Smriti style */
+.pcard{cursor:pointer;}
+.pcard-img{position:relative;overflow:hidden;background:var(--off);aspect-ratio:3/4;margin-bottom:12px;}
+.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+.pcard:hover .pcard-img img{transform:scale(1.03);}
+.pcard-badge{position:absolute;top:10px;left:10px;background:var(--white);color:var(--black);font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--lgray);}
+.pcard-badge.sale{background:var(--black);color:var(--white);border:none;}
+.pcard-badge.new{background:var(--gold);color:var(--white);border:none;}
+.pcard-quick{position:absolute;bottom:0;left:0;right:0;background:rgba(10,10,10,.85);transform:translateY(100%);transition:transform var(--t);padding:12px;text-align:center;}
+.pcard:hover .pcard-quick{transform:translateY(0);}
+.pcard-quick button{width:100%;padding:10px;background:var(--white);color:var(--black);font-size:10px;letter-spacing:.16em;text-transform:uppercase;border:none;cursor:pointer;font-family:inherit;transition:background var(--t);}
+.pcard-quick button:hover{background:var(--gold);color:var(--white);}
+.pcard-name{font-size:13px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;line-height:1.3;}
+.pcard-price{font-size:13px;display:flex;gap:10px;align-items:center;}
+.pcard-price-sale{color:var(--black);}
+.pcard-price-orig{color:var(--gray);text-decoration:line-through;font-size:12px;}
+
+/* CART DRAWER */
+.cart-drawer{position:fixed;top:0;right:-440px;width:440px;height:100vh;background:var(--white);z-index:200;transition:right .3s;border-left:1px solid var(--lgray);display:flex;flex-direction:column;}
+.cart-drawer.open{right:0;}
+.cart-head{padding:20px 24px;border-bottom:1px solid var(--lgray);display:flex;justify-content:space-between;align-items:center;}
+.cart-head-title{font-size:12px;letter-spacing:.18em;text-transform:uppercase;}
+.cart-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray);}
+.free-ship-bar{background:var(--off);padding:10px 24px;font-size:11px;letter-spacing:.08em;text-align:center;color:var(--gray);}
+.cart-body{flex:1;overflow-y:auto;padding:0 24px;}
+.cart-empty{text-align:center;padding:60px 0;font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:.1em;}
+.citem{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--lgray);}
+.citem-img{width:80px;height:100px;object-fit:cover;background:var(--off);flex-shrink:0;}
+.citem-name{font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;}
+.citem-price{font-size:12px;color:var(--gray);}
+.citem-rm{background:none;border:none;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);cursor:pointer;margin-top:6px;padding:0;}
+.cart-foot{padding:20px 24px;border-top:1px solid var(--lgray);}
+.cart-subtotal{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
+.cart-checkout-btn{width:100%;padding:16px;background:var(--black);color:var(--white);font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;font-family:inherit;transition:background var(--t);}
+.cart-checkout-btn:hover{background:var(--gold);}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;display:none;}
+.cart-overlay.show{display:block;}
+
+/* FOOTER */
+.site-footer{background:var(--black);color:rgba(255,255,255,.6);padding:60px 40px 32px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+.footer-brand-img{width:52px;height:52px;border-radius:50%;object-fit:contain;margin-bottom:14px;}
+.footer-brand-name{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--white);margin-bottom:4px;}
+.footer-brand-sub{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.footer-desc{font-size:12px;line-height:1.8;color:rgba(255,255,255,.45);}
+.footer-col-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--white);margin-bottom:18px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul li a{font-size:12px;color:rgba(255,255,255,.45);transition:color var(--t);}
+.footer-col ul li a:hover{color:var(--gold);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.25);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--black);color:var(--white);padding:12px 28px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;z-index:999;opacity:0;transition:all .3s;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:768px){
+  .nav-top{padding:0 16px;height:60px;}
+  .nav-cats{overflow-x:auto;justify-content:flex-start;padding:0 16px;}
+  .nav-cat{white-space:nowrap;padding:10px 16px;}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px;}
+}
+
+.checkout-nav{background:var(--white);border-bottom:1px solid var(--lgray);padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.checkout-nav-logo{display:flex;align-items:center;gap:12px;}
+.checkout-nav-logo img{width:40px;height:40px;border-radius:50%;object-fit:contain;}
+.checkout-nav-brand{font-size:14px;letter-spacing:.1em;text-transform:uppercase;}
+.checkout-secure{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gray);}
+.checkout-wrap{display:grid;grid-template-columns:1fr 400px;max-width:1100px;margin:0 auto;gap:0;min-height:80vh;}
+.checkout-form{padding:40px;border-right:1px solid var(--lgray);}
+.checkout-summary{padding:40px;background:var(--off);position:sticky;top:68px;height:fit-content;}
+.co-section-title{font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--lgray);}
+.co-form-group{margin-bottom:16px;}
+.co-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:7px;}
+.co-input{width:100%;padding:12px 14px;border:1px solid var(--lgray);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;background:var(--white);}
+.co-input:focus{border-color:var(--black);}
+.co-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.pay-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
+.pay-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--lgray);cursor:pointer;transition:border-color .2s;background:var(--white);}
+.pay-opt.active{border-color:var(--black);}
+.pay-opt label{font-size:13px;cursor:pointer;}
+.place-btn{width:100%;padding:16px;background:var(--black);color:var(--white);font-size:11px;letter-spacing:.22em;text-transform:uppercase;border:none;cursor:pointer;font-family:inherit;transition:background .2s;}
+.place-btn:hover{background:var(--gold);}
+.sum-item{display:flex;justify-content:space-between;margin-bottom:12px;font-size:13px;}
+.sum-item-name{flex:1;padding-right:12px;}
+.sum-div{border:none;border-top:1px solid var(--lgray);margin:16px 0;}
+.sum-total{display:flex;justify-content:space-between;font-size:14px;font-weight:500;letter-spacing:.06em;}
+.sum-note{font-size:11px;color:var(--gray);margin-top:12px;line-height:1.7;}
+@media(max-width:768px){
+  .checkout-wrap{grid-template-columns:1fr;}
+  .checkout-form,.checkout-summary{padding:24px 16px;}
+  .checkout-summary{position:static;}
+  .co-row{grid-template-columns:1fr;}
+  .checkout-nav{padding:0 16px;}
+}
+.wa-float-btn{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#25D366;color:#fff;display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:50px;font-size:15px;font-weight:600;letter-spacing:.02em;text-decoration:none;box-shadow:0 4px 22px rgba(37,211,102,.45);z-index:9999;white-space:nowrap;transition:transform .2s,box-shadow .2s;}
+.wa-float-btn:hover{transform:translateX(-50%) scale(1.05);box-shadow:0 6px 28px rgba(37,211,102,.6);}
+</style>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+<div class="checkout-nav">
+  <a href="/" class="checkout-nav-logo" style="text-decoration:none;color:inherit;">
+    <img src="https://www.nimishacreations.in/images/logo.png" alt="Parveena Agarwal" referrerpolicy="no-referrer"/>
+    <span class="checkout-nav-brand">Parveena Agarwal</span>
+  </a>
+  <span class="checkout-secure">&#128274; Secure Checkout</span>
+  <a href="/shop" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);">&larr; Continue Shopping</a>
+</div>
+<div class="checkout-wrap" id="checkout-wrap">
+  <div class="checkout-form">
+    <div class="co-section-title">Contact & Delivery</div>
+    <div class="co-row">
+      <div class="co-form-group"><label class="co-label">Full Name *</label><input class="co-input" type="text" id="f-name" placeholder="Priya Sharma"/></div>
+      <div class="co-form-group"><label class="co-label">Phone *</label><input class="co-input" type="tel" id="f-phone" placeholder="+91 98765 43210"/></div>
+    </div>
+    <div class="co-form-group"><label class="co-label">Email</label><input class="co-input" type="email" id="f-email" placeholder="priya@email.com"/></div>
+    <div class="co-form-group"><label class="co-label">Address Line 1 *</label><input class="co-input" type="text" id="f-addr1" placeholder="House / Flat / Building No."/></div>
+    <div class="co-form-group"><label class="co-label">Address Line 2</label><input class="co-input" type="text" id="f-addr2" placeholder="Street, Area, Landmark"/></div>
+    <div class="co-row">
+      <div class="co-form-group"><label class="co-label">City *</label><input class="co-input" type="text" id="f-city" placeholder="Kanpur"/></div>
+      <div class="co-form-group"><label class="co-label">State *</label><input class="co-input" type="text" id="f-state" placeholder="Uttar Pradesh"/></div>
+    </div>
+    <div class="co-form-group" style="max-width:200px;"><label class="co-label">PIN Code *</label><input class="co-input" type="text" id="f-pin" placeholder="208001"/></div>
+    <div class="co-section-title" style="margin-top:32px;">Payment Method</div>
+    <div class="pay-opts">
+      <div class="pay-opt active" onclick="selPay(this,'cod')"><input type="radio" name="pay" checked/><label>Cash on Delivery (COD)</label></div>      <div class="pay-opt" onclick="selPay(this,'razorpay')"><input type="radio" name="pay"/><label>Pay Online &mdash; Cards, UPI, Wallets</label></div>
+    </div>    <button class="place-btn" id="place-btn" onclick="placeOrder()">Place Order</button>
+  </div>
+  <div class="checkout-summary">
+    <div class="co-section-title">Order Summary</div>
+    <div id="sum-items"></div>
+    <hr class="sum-div"/>
+    <div class="sum-total"><span>Total</span><span id="sum-total">Rs. 0</span></div>
+    <p class="sum-note">Free delivery on all orders. Estimated delivery in 4&ndash;7 working days.</p>
+  </div>
+</div>
+<script>
+var API='https://hs6yymwz25.execute-api.ap-south-1.amazonaws.com/prod';
+var cart=JSON.parse(localStorage.getItem('nc_cart')||'[]');
+var payMethod='cod';
+function selPay(el,m){payMethod=m;document.querySelectorAll('.pay-opt').forEach(function(o){o.classList.remove('active');});el.classList.add('active');el.querySelector('input').checked=true;}
+function renderSummary(){
+  if(!cart.length){document.getElementById('checkout-wrap').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:80px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray)">Your bag is empty. <a href="/shop" style="border-bottom:1px solid currentColor">Continue Shopping</a></div>';return;}
+  var total=cart.reduce(function(s,c){return s+c.price*c.qty;},0);
+  document.getElementById('sum-items').innerHTML=cart.map(function(item){
+    return'<div class="sum-item"><span class="sum-item-name">'+item.name+' &mdash; '+item.qty+'</span><span>Rs. '+(item.price*item.qty).toLocaleString('en-IN')+'</span></div>';
+  }).join('');
+  document.getElementById('sum-total').textContent='Rs. '+total.toLocaleString('en-IN');
+}
+function showSuccess(orderId){
+  localStorage.removeItem('nc_cart');
+  document.getElementById('checkout-wrap').innerHTML=
+    '<div style="grid-column:1/-1;text-align:center;padding:60px 40px;">'
+    +'<div style="font-size:48px;margin-bottom:20px;">&#10003;</div>'
+    +'<h2 style="font-size:22px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">Order Placed!</h2>'
+    +'<p style="color:var(--gray);font-size:13px;margin-bottom:6px;">Order ID: <strong>'+orderId+'</strong></p>'
+    +'<p style="color:var(--gray);font-size:13px;margin-bottom:28px;">We will contact you on WhatsApp to confirm your order.</p>'
+    +'<a href="/shop" style="display:inline-block;padding:14px 32px;background:var(--black);color:var(--white);font-size:11px;letter-spacing:.2em;text-transform:uppercase;">Continue Shopping</a>'
+    +'</div>';
+}
+function getFormData(){
+  return{name:document.getElementById('f-name').value.trim(),phone:document.getElementById('f-phone').value.trim(),
+    email:document.getElementById('f-email').value.trim(),addr1:document.getElementById('f-addr1').value.trim(),
+    addr2:document.getElementById('f-addr2').value.trim(),city:document.getElementById('f-city').value.trim(),
+    state:document.getElementById('f-state').value.trim(),pin:document.getElementById('f-pin').value.trim()};
+}
+async function placeOrder(){
+  var f=getFormData();
+  if(!f.name||!f.phone||!f.addr1||!f.city||!f.state||!f.pin){alert('Please fill all required fields.');return;}
+  var btn=document.getElementById('place-btn');
+  var total=cart.reduce(function(s,c){return s+c.price*c.qty;},0);
+  btn.textContent='Processing...';btn.disabled=true;
+  //  COD 
+  if(payMethod==='cod'){
+    try{
+      var r=await fetch(API+'/order',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contact:{name:f.name,phone:f.phone,email:f.email},
+          shipping:{addr1:f.addr1,addr2:f.addr2,city:f.city,state:f.state,pin:f.pin},
+          cart:cart,total:total,payment_method:'cod',status:'pending'})});
+      var d=await r.json();
+      if(d.success){showSuccess(d.order_id);}else{throw new Error(d.error||'Failed');}
+    }catch(e){btn.textContent='Place Order';btn.disabled=false;alert('Something went wrong. Please contact us on WhatsApp.');}
+    return;
+  }
+  //  Razorpay 
+  try{
+    var rz=await fetch(API+'/razorpay/create-order',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({amount:total*100,currency:'INR',receipt:'NC'+Date.now()})});
+    var rzd=await rz.json();
+    if(!rzd.order_id){throw new Error('Could not create payment order');}
+    var options={
+      key:rzd.key_id,amount:rzd.amount,currency:rzd.currency,
+      name:'Parveena Agarwal',description:'Fashion Order',order_id:rzd.order_id,
+      prefill:{name:f.name,contact:f.phone,email:f.email},
+      theme:{color:'#0A0A0A'},
+      handler:async function(response){
+        try{
+          var vr=await fetch(API+'/razorpay/verify',{method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({razorpay_order_id:response.razorpay_order_id,
+              razorpay_payment_id:response.razorpay_payment_id,
+              razorpay_signature:response.razorpay_signature,
+              contact:{name:f.name,phone:f.phone,email:f.email},
+              shipping:{addr1:f.addr1,addr2:f.addr2,city:f.city,state:f.state,pin:f.pin},
+              cart:cart,total:total})});
+          var vd=await vr.json();
+          if(vd.success){showSuccess(vd.order_id);}
+          else{alert('Payment verification failed. Please contact us on WhatsApp.');}
+        }catch(e){alert('Error saving order. Please screenshot and contact us.');}
+      },
+      modal:{ondismiss:function(){btn.textContent='Place Order';btn.disabled=false;}}
+    };
+    var rzp=new Razorpay(options);rzp.open();
+  }catch(e){btn.textContent='Place Order';btn.disabled=false;alert('Could not open payment: '+e.message);}
+}
+renderSummary();
+</script>
+<a href="https://wa.me/919336728546?text=Hi%21+I+have+an+urgent+order." class="wa-float-btn" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Urgent Order</a>
+</body></html>
+
+
+

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.smritiapparels.com)",
+      "Bash(grep -n \"^<style>\\\\|^<script>$\\\\|fonts.googleapis\" /d/nimisha-creations/website/index.html /d/nimisha-creations/website/shop.html /d/nimisha-creations/website/product.html /d/nimisha-creations/website/checkout.html /d/nimisha-creations/website/admin.html)",
+      "Bash(grep -v \"^$\")",
+      "WebFetch(domain:d1u0bfhc11ukwn.cloudfront.net)",
+      "Bash(curl -s \"https://d1u0bfhc11ukwn.cloudfront.net\")",
+      "Bash(curl -s \"https://d1u0bfhc11ukwn.cloudfront.net/shop\")",
+      "Bash(curl -s \"https://d1u0bfhc11ukwn.cloudfront.net/product\")",
+      "Bash(curl -s \"https://d1u0bfhc11ukwn.cloudfront.net\" | head -500 > /tmp/homepage.html && head -200 /tmp/homepage.html)",
+      "Read(//tmp/**)",
+      "Bash(curl -s \"https://d1u0bfhc11ukwn.cloudfront.net/shop\" | head -300 > /tmp/shop.html && head -200 /tmp/shop.html)"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
+    ]
+  }
+}

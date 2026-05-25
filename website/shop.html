@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="referrer" content="no-referrer"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Collections — Parveena Agarwal</title>
+<link rel="icon" type="image/png" href="https://www.nimishacreations.in/images/logo.png"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--black:#0A0A0A;--white:#fff;--off:#F5F3EF;--gold:#B8960C;--gray:#6B6B6B;--lgray:#E8E8E8;--t:.25s ease;}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--white);color:var(--black);-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;}
+
+/* ANN BAR */
+.ann-bar{background:var(--black);color:rgba(255,255,255,.55);text-align:center;padding:10px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;}
+.ann-bar a{color:rgba(255,255,255,.55);}
+
+/* HEADER */
+.site-header{background:var(--white);border-bottom:1px solid var(--lgray);position:sticky;top:0;z-index:200;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:70px;}
+.h-logo{display:flex;align-items:center;gap:12px;}
+.h-logo img{width:46px;height:46px;border-radius:50%;object-fit:contain;}
+.h-brand{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--black);display:block;}
+.h-sub{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:block;}
+.h-nav{display:flex;gap:0;}
+.h-nav a{padding:26px 16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--black);border-bottom:2px solid transparent;transition:border-color .2s;}
+.h-nav a:hover{border-bottom-color:var(--black);}
+.h-icons{display:flex;align-items:center;gap:18px;}
+.h-icon-btn{background:none;border:none;cursor:pointer;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--black);font-family:inherit;display:flex;align-items:center;gap:4px;}
+.cart-badge{background:var(--black);color:var(--white);border-radius:50%;width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;}
+
+/* CART DRAWER */
+.cart-drawer{position:fixed;top:0;right:0;width:440px;height:100vh;background:var(--white);z-index:500;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);border-left:1px solid var(--lgray);display:flex;flex-direction:column;}
+.cart-drawer.open{transform:translateX(0);}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:499;display:none;}
+.cart-overlay.show{display:block;}
+.cart-top{padding:20px 24px;border-bottom:1px solid var(--lgray);display:flex;justify-content:space-between;align-items:center;}
+.cart-top-title{font-size:11px;letter-spacing:.2em;text-transform:uppercase;}
+.cart-close-btn{background:none;border:none;font-size:22px;cursor:pointer;color:var(--gray);}
+.cart-ship-bar{background:var(--off);padding:9px 24px;font-size:11px;letter-spacing:.06em;text-align:center;color:var(--gray);}
+.cart-items-wrap{flex:1;overflow-y:auto;padding:0 24px;}
+.cart-empty-msg{text-align:center;padding:60px 0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);}
+.c-item{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid var(--lgray);}
+.c-item-img{width:76px;height:96px;flex-shrink:0;background:var(--off);object-fit:cover;}
+.c-item-name{font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;line-height:1.4;}
+.c-item-price{font-size:12px;color:var(--gray);margin-bottom:8px;}
+.c-item-rm{background:none;border:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);cursor:pointer;padding:0;}
+.cart-bottom{padding:20px 24px;border-top:1px solid var(--lgray);}
+.cart-sub-row{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.cart-co-btn{width:100%;padding:15px;background:var(--black);color:var(--white);font-size:11px;letter-spacing:.22em;text-transform:uppercase;border:none;cursor:pointer;font-family:inherit;transition:background .2s;}
+.cart-co-btn:hover{background:var(--gold);}
+.toast-msg{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--black);color:var(--white);padding:11px 26px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;z-index:999;opacity:0;transition:all .3s;pointer-events:none;}
+.toast-msg.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* COLLECTION PAGE */
+.col-page-head{text-align:center;padding:48px 40px 32px;border-bottom:1px solid var(--lgray);}
+.col-page-title{font-size:28px;letter-spacing:.18em;text-transform:uppercase;font-weight:400;}
+.col-toolbar{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--lgray);}
+.col-toolbar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.col-pill{padding:7px 16px;border:1px solid var(--lgray);font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;background:var(--white);transition:all .2s;}
+.col-pill:hover,.col-pill.on{background:var(--black);color:var(--white);border-color:var(--black);}
+.sort-wrap{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;}
+.sort-sel{padding:7px 10px;border:none;border-bottom:1px solid var(--black);font-size:11px;font-family:inherit;outline:none;background:var(--white);cursor:pointer;letter-spacing:.1em;text-transform:uppercase;}
+.col-count{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-left:16px;}
+
+/* PRODUCT GRID — Smriti style */
+.col-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;background:transparent;padding:24px 40px 48px;}
+.col-grid-inner{display:contents;}
+.grid-cell{background:var(--white);padding:0;overflow:hidden;}
+@media(min-width:900px){.col-grid{grid-template-columns:repeat(4,1fr);}}
+
+/* PRODUCT CARD */
+.item-card{cursor:pointer;opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease;}
+.item-card.visible{opacity:1;transform:translateY(0);}
+
+/* Product image — crossfade on hover like Smriti */
+.item-img-wrap{position:relative;overflow:hidden;background:var(--off);aspect-ratio:3/4;}
+.item-img-wrap .img1{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transition:opacity .45s ease;opacity:1;}
+.item-img-wrap .img2{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transition:opacity .45s ease;opacity:0;}
+.item-card:hover .item-img-wrap .img1{opacity:0;}
+.item-card:hover .item-img-wrap .img2{opacity:1;}
+.item-img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px;background:var(--off);}
+
+
+
+/* Badges */
+.item-onsale{position:absolute;top:10px;left:10px;background:var(--black);color:var(--white);font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:4px 8px;z-index:2;}
+.item-new{position:absolute;top:10px;left:10px;background:var(--gold);color:var(--white);font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:4px 8px;z-index:2;}
+
+/* Product info — centered like Smriti */
+.item-name{font-size:12px;letter-spacing:.07em;text-transform:uppercase;line-height:1.35;padding:12px 12px 4px;text-align:center;}
+.item-price{font-size:13px;display:flex;gap:10px;align-items:center;justify-content:center;padding:0 12px 14px;text-align:center;}
+.ip-sale{color:var(--black);}
+.ip-orig{color:#f94c43;text-decoration:line-through;font-size:12px;}
+
+/* FOOTER */
+.site-footer{background:var(--black);color:rgba(255,255,255,.45);padding:56px 40px 28px;}
+.ft-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+.ft-logo-wrap{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.ft-logo-wrap img{width:44px;height:44px;border-radius:50%;object-fit:contain;}
+.ft-brand{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--white);}
+.ft-sub{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-top:2px;}
+.ft-desc{font-size:12px;line-height:1.8;color:rgba(255,255,255,.35);margin-top:12px;}
+.ft-col-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--white);margin-bottom:16px;}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.ft-col ul li a{font-size:12px;color:rgba(255,255,255,.4);transition:color .2s;}
+.ft-col ul li a:hover{color:var(--gold);}
+.ft-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.22);}
+.wa-float-btn{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#25D366;color:#fff;display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:50px;font-size:15px;font-weight:600;letter-spacing:.02em;text-decoration:none;box-shadow:0 4px 22px rgba(37,211,102,.45);z-index:9999;white-space:nowrap;transition:transform .2s,box-shadow .2s;}
+.wa-float-btn:hover{transform:translateX(-50%) scale(1.05);box-shadow:0 6px 28px rgba(37,211,102,.6);}
+
+@media(max-width:768px){
+  .header-inner{padding:0 16px;height:60px;}
+  .h-nav{display:none;}
+  .col-page-head{padding:32px 16px 24px;}
+  .col-toolbar{padding:12px 16px;flex-direction:column;align-items:flex-start;gap:12px;}
+  .col-grid{padding:16px 16px 32px;gap:12px;}
+  .site-footer{padding:40px 16px 24px;}
+  .ft-grid{grid-template-columns:1fr 1fr;gap:28px;}
+  .cart-drawer{width:100%;}
+  .cart-bottom{padding-bottom:80px;}
+}
+@media(max-width:600px){
+  .col-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="ann-bar">Free shipping on all orders &nbsp;·&nbsp; <a href="/shop">Shop New Collection</a></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="h-logo">
+      <img src="https://www.nimishacreations.in/images/logo.png" alt="Parveena Agarwal" referrerpolicy="no-referrer"/>
+      <div class="h-logo-text">
+        <span class="h-brand">Parveena Agarwal</span>
+        <span class="h-sub">Fashion Brand · Estd. 2007</span>
+      </div>
+    </a>
+    <nav class="h-nav">
+      <a href="/shop">Collections</a>
+      <a href="/shop?cat=ethnic-dresses">Ethnic Dresses</a>
+      <a href="/shop?cat=coord-sets">Coord Sets</a>
+      <a href="/shop?cat=kurta-sets">Kurta Sets</a>
+      <a href="/shop?cat=indo-western">Indo Western</a>
+      <a href="/shop?cat=kurtis">Kurtis</a>
+    </nav>
+    <div class="h-icons">
+      <button class="h-icon-btn" onclick="openCart()">
+        Bag&nbsp;<span class="cart-badge" id="cart-badge" style="display:none">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-top">
+    <span class="cart-top-title">Your Bag</span>
+    <button class="cart-close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-ship-bar" id="cart-ship-msg">Free shipping on all orders!</div>
+  <div class="cart-items-wrap" id="cart-items-wrap"></div>
+  <div class="cart-bottom">
+    <div class="cart-sub-row"><span>Subtotal</span><span id="cart-subtotal">Rs. 0</span></div>
+    <button class="cart-co-btn" onclick="location.href='/checkout'">Checkout</button>
+  </div>
+</div>
+<div class="toast-msg" id="toast-msg"></div>
+
+<div class="col-page-head">
+  <h1 class="col-page-title" id="page-title">Collections</h1>
+</div>
+<div class="col-toolbar">
+  <div class="col-toolbar-left" id="cat-pills">
+    <div class="col-pill on" onclick="setCat('all',this)">All Items</div>
+    <div class="col-pill" onclick="setCat('ethnic-dresses',this)">Ethnic Dresses</div>
+    <div class="col-pill" onclick="setCat('coord-sets',this)">Coord Sets</div>
+    <div class="col-pill" onclick="setCat('kurta-sets',this)">Kurta Sets</div>
+    <div class="col-pill" onclick="setCat('indo-western',this)">Indo Western</div>
+    <div class="col-pill" onclick="setCat('kurtis',this)">Kurtis</div>
+  </div>
+  <div class="sort-wrap">
+    Sort&nbsp;
+    <select class="sort-sel" onchange="setSort(this.value)">
+      <option value="new">Featured</option>
+      <option value="pa">Price: Low to High</option>
+      <option value="pd">Price: High to Low</option>
+      <option value="az">Alphabetically, A-Z</option>
+      <option value="za">Alphabetically, Z-A</option>
+    </select>
+    <span class="col-count" id="col-count"></span>
+  </div>
+</div>
+<div class="col-grid" id="col-grid">
+  <div style="grid-column:1/-1;text-align:center;padding:80px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);background:var(--white)">Loading items...</div>
+</div>
+
+<footer class="site-footer">
+  <div class="ft-grid">
+    <div>
+      <div class="ft-logo-wrap">
+        <a href="/"><img src="https://www.nimishacreations.in/images/logo.png" alt="Parveena Agarwal" referrerpolicy="no-referrer"/></a>
+        <div><div class="ft-brand">Parveena Agarwal</div><div class="ft-sub">Fashion Brand · Estd. 2007</div></div>
+      </div>
+      <p class="ft-desc">Handcrafted ethnic wear from Kanpur. Pure fabrics, pure handwork. Ethnic dresses, coord sets, kurta sets & Indo-western fusion.</p>
+    </div>
+    <div class="ft-col">
+      <div class="ft-col-title">Collections</div>
+      <ul>
+        <li><a href="/shop?cat=ethnic-dresses">Ethnic Dresses</a></li>
+        <li><a href="/shop?cat=coord-sets">Coord Sets</a></li>
+        <li><a href="/shop?cat=kurta-sets">Kurta Sets</a></li>
+        <li><a href="/shop?cat=indo-western">Indo Western</a></li>
+        <li><a href="/shop?cat=kurtis">Kurtis</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <div class="ft-col-title">Help</div>
+      <ul>
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">Shipping Policy</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Track Order</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <div class="ft-col-title">Contact</div>
+      <ul>
+        <li><a href="https://wa.me/919336728546" target="_blank" style="display:inline-flex;align-items:center;gap:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp Us</a></li>
+        <li><a href="https://instagram.com/nimishacreations_kanpur" target="_blank" style="display:inline-flex;align-items:center;gap:6px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a></li>
+        
+        <li><a href="#">Kanpur, Uttar Pradesh</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2025 Parveena Agarwal Fashion Brand, Kanpur</span>
+    <span>Made with ♥ in India</span>
+  </div>
+</footer>
+
+<script>
+var API='https://hs6yymwz25.execute-api.ap-south-1.amazonaws.com/prod';
+var allItems=[],activeCat='all',sortBy='new';
+
+var cart=JSON.parse(localStorage.getItem('nc_cart')||'[]');
+function openCart(){document.getElementById('cart-drawer').classList.add('open');document.getElementById('cart-overlay').classList.add('show');var wa=document.querySelector('.wa-float-btn');if(wa)wa.style.display='none';renderCart();}
+function closeCart(){document.getElementById('cart-drawer').classList.remove('open');document.getElementById('cart-overlay').classList.remove('show');var wa=document.querySelector('.wa-float-btn');if(wa)wa.style.display='';}
+function saveCart(){localStorage.setItem('nc_cart',JSON.stringify(cart));}
+function updBadge(){var n=cart.reduce(function(s,c){return s+c.qty;},0);var b=document.getElementById('cart-badge');if(b){b.textContent=n;b.style.display=n?'inline-flex':'none';}}
+function toast(msg){var t=document.getElementById('toast-msg');if(!t)return;t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2000);}
+function addToCart(id,pJson){
+  var p=typeof pJson==='string'?JSON.parse(pJson):pJson;
+  var ex=cart.find(function(c){return c.id===id;});
+  if(ex){ex.qty++;}else{cart.push({id:p.id,name:p.name,price:Number(p.salePrice||p.price),image:p.images&&p.images[0]?p.images[0]:'',qty:1});}
+  saveCart();updBadge();toast('Added to bag');
+}
+function removeItem(i){cart.splice(i,1);saveCart();renderCart();updBadge();}
+function renderCart(){
+  var wrap=document.getElementById('cart-items-wrap');
+  var total=cart.reduce(function(s,c){return s+c.price*c.qty;},0);
+  document.getElementById('cart-subtotal').textContent='Rs. '+total.toLocaleString('en-IN');
+  var shipMsg=document.getElementById('cart-ship-msg');
+  if(shipMsg)shipMsg.textContent=true?'Free shipping on all orders!':'';
+  if(!cart.length){wrap.innerHTML='<div class="cart-empty-msg">Your bag is empty</div>';return;}
+  wrap.innerHTML=cart.map(function(item,i){
+    return'<div class="c-item">'
+      +'<div class="c-item-img" style="'+(item.image?'background-image:url('+item.image+');background-size:cover;background-position:center':'background:var(--off)')+'"></div>'
+      +'<div><div class="c-item-name">'+item.name+'</div><div class="c-item-price">Rs. '+item.price.toLocaleString('en-IN')+' × '+item.qty+'</div>'
+      +'<button class="c-item-rm" onclick="removeItem('+i+')">Remove</button></div></div>';
+  }).join('');
+}
+updBadge();
+
+
+// IMAGE SLIDER
+function initSlider(card){
+  var imgs=JSON.parse(card.dataset.imgs||'[]');
+  var idx=0;
+  var track=card.querySelector('.slider-imgs');
+  var dots=card.querySelectorAll('.s-dot');
+  function goTo(n){
+    idx=(n+imgs.length)%imgs.length;
+    track.style.transform='translateX(-'+idx*100+'%)';
+    dots.forEach(function(d,i){d.classList.toggle('on',i===idx);});
+  }
+  var prev=card.querySelector('.s-prev');
+  var next=card.querySelector('.s-next');
+  if(prev)prev.onclick=function(e){e.stopPropagation();goTo(idx-1);};
+  if(next)next.onclick=function(e){e.stopPropagation();goTo(idx+1);};
+  dots.forEach(function(d,i){d.onclick=function(e){e.stopPropagation();goTo(i);};});
+  // Auto-advance on hover
+  var timer=null;
+  card.addEventListener('mouseenter',function(){
+    if(imgs.length>1)timer=setInterval(function(){goTo(idx+1);},1200);
+  });
+  card.addEventListener('mouseleave',function(){clearInterval(timer);goTo(0);});
+}
+
+// SCROLL REVEAL
+function initReveal(){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.item-card').forEach(function(el,i){
+    el.style.transitionDelay=(i%4)*0.08+'s';
+    obs.observe(el);
+  });
+}
+
+function buildCard(p){
+  var totalStock=p.variants&&p.variants.length?p.variants.reduce(function(s,v){return s+Number(v.stock||0);},0):Number(p.stock||0);
+  var oosHtml=totalStock===0?'<div style="position:absolute;inset:0;background:rgba(255,255,255,.65);display:flex;align-items:center;justify-content:center;z-index:3"><span style="background:#8B1A1A;color:#fff;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:6px 14px">Out of Stock</span></div>':'';
+  var imgs=p.images&&p.images.length?p.images:[];
+  var img1=imgs[0]||'';
+  var img2=imgs[1]||imgs[0]||'';
+
+  var wrap=document.createElement('div');
+  wrap.className='item-img-wrap';
+
+  if(img1){
+    var i1=document.createElement('img');
+    i1.className='img1'; i1.src=img1; i1.loading='lazy'; i1.alt=p.name;
+    var i2=document.createElement('img');
+    i2.className='img2'; i2.src=img2; i2.loading='lazy'; i2.alt=p.name;
+    wrap.appendChild(i1); wrap.appendChild(i2);
+  }else{
+    var ph=document.createElement('div');
+    ph.className='item-img-placeholder'; ph.textContent='👗';
+    wrap.appendChild(ph);
+  }
+
+  if(p.salePrice){
+    var b=document.createElement('div'); b.className='item-onsale'; b.textContent='On Sale'; wrap.appendChild(b);
+  }else if(p.badge==='new'){
+    var b=document.createElement('div'); b.className='item-new'; b.textContent='New'; wrap.appendChild(b);
+  }
+
+  
+
+  var priceSale=p.salePrice
+    ?'Rs. '+Number(p.salePrice).toLocaleString('en-IN')
+    :'Rs. '+Number(p.price).toLocaleString('en-IN');
+  var priceOrig=p.salePrice?'Rs. '+Number(p.price).toLocaleString('en-IN'):'';
+
+  var nameEl=document.createElement('div'); nameEl.className='item-name'; nameEl.textContent=p.name;
+  var priceEl=document.createElement('div'); priceEl.className='item-price';
+  var saleSpan=document.createElement('span'); saleSpan.className='ip-sale'; saleSpan.textContent=priceSale;
+  priceEl.appendChild(saleSpan);
+  if(priceOrig){var origSpan=document.createElement('span');origSpan.className='ip-orig';origSpan.textContent=priceOrig;priceEl.appendChild(origSpan);}
+
+  var card=document.createElement('div'); card.className='item-card';
+  card.appendChild(wrap); card.appendChild(nameEl); card.appendChild(priceEl);
+  card.addEventListener('click',function(){location.href='/product?id='+p.id;});
+  return card;
+}
+
+function setCat(cat,el){
+  activeCat=cat;
+  document.querySelectorAll('.col-pill').forEach(function(p){p.classList.remove('on');});
+  el.classList.add('on');
+  var titles={'all':'Collections','ethnic-dresses':'Ethnic Dresses','coord-sets':'Coord Sets','kurta-sets':'Kurta Sets','indo-western':'Indo Western','kurtis':'Kurtis'};
+  document.getElementById('page-title').textContent=titles[cat]||'Collections';
+  render();
+}
+function setSort(v){sortBy=v;render();}
+
+function render(){
+  var items=allItems.filter(function(p){
+    if(p.active===false)return false;
+    return activeCat==='all'||p.category===activeCat;
+  });
+  if(sortBy==='pa')items.sort(function(a,b){return Number(a.salePrice||a.price)-Number(b.salePrice||b.price);});
+  else if(sortBy==='pd')items.sort(function(a,b){return Number(b.salePrice||b.price)-Number(a.salePrice||a.price);});
+  else if(sortBy==='az')items.sort(function(a,b){return a.name.localeCompare(b.name);});
+  else if(sortBy==='za')items.sort(function(a,b){return b.name.localeCompare(a.name);});
+  document.getElementById('col-count').textContent=items.length+' item'+(items.length!==1?'s':'');
+  var grid=document.getElementById('col-grid');
+  if(!items.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:80px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);background:var(--white)">No items found.</div>';
+    return;
+  }
+  grid.innerHTML='';
+  items.forEach(function(p){
+    var cell=document.createElement('div');
+    cell.className='grid-cell';
+    cell.appendChild(buildCard(p));
+    grid.appendChild(cell);
+  });
+  // Init sliders
+  
+  // Init scroll reveal
+  initReveal();
+}
+async function init(){
+  var grid=document.getElementById('col-grid');
+  try{
+    var r=await fetch(API+'/products');
+    var d=await r.json();
+    allItems=(d.products||[]);
+    var params=new URLSearchParams(window.location.search);
+    var cat=params.get('cat');
+    if(cat&&cat!=='all'){
+      activeCat=cat;
+      var titles={'ethnic-dresses':'Ethnic Dresses','coord-sets':'Coord Sets','kurta-sets':'Kurta Sets','indo-western':'Indo Western','kurtis':'Kurtis'};
+      document.querySelectorAll('.col-pill').forEach(function(p){p.classList.remove('on');});
+      var pill=document.querySelector('.col-pill[onclick*="\''+cat+'\'"]');
+      if(pill)pill.classList.add('on');
+      document.getElementById('page-title').textContent=titles[cat]||'Collections';
+    }
+    render();
+  }catch(e){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:80px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);background:var(--white)">Could not load items. Please try again.</div>';
+  }
+}
+init();
+</script>
+<a href="https://wa.me/919336728546?text=Hi%21+I+have+an+urgent+order." class="wa-float-btn" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Urgent Order</a>
+</body></html>
