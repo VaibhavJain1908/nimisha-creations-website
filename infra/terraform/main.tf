@@ -385,7 +385,7 @@ resource "aws_lambda_function" "order_handler" {
       AWS_REGION_NAME       = "ap-south-1"
       S3_BUCKET             = local.bucket_name
       ADMIN_UPLOAD_TOKEN    = "nimisha_upload_2025"
-      CF_DISTRIBUTION_ID   = "E22P6B24TXTI9X"
+      CF_DISTRIBUTION_ID   = aws_cloudfront_distribution.website.id
     }
   }
 
