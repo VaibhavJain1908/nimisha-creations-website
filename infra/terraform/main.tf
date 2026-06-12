@@ -207,7 +207,7 @@ resource "aws_cloudfront_distribution" "website" {
   aliases = ["www.nimishacreations.in"]
 
   viewer_certificate {
-    acm_certificate_arn            = "arn:aws:acm:us-east-1:255325274897:certificate/f7cecec7-9802-4596-aa70-436ab2cee3e2"
+    acm_certificate_arn            = aws_acm_certificate.website.arn
     ssl_support_method             = "sni-only"
     minimum_protocol_version       = "TLSv1.2_2021"
   }
