@@ -10,7 +10,9 @@ from decimal import Decimal
 dynamodb = boto3.resource('dynamodb', region_name=os.environ.get('AWS_REGION', 'ap-south-1'))
 ses      = boto3.client('ses', region_name=os.environ.get('AWS_REGION', 'ap-south-1'))
 ssm      = boto3.client('ssm', region_name=os.environ.get('AWS_REGION', 'ap-south-1'))
-s3       = boto3.client('s3',  region_name=os.environ.get('AWS_REGION', 'ap-south-1'))
+_region  = os.environ.get('AWS_REGION', 'ap-south-1')
+s3       = boto3.client('s3',  region_name=_region,
+                               endpoint_url=f'https://s3.{_region}.amazonaws.com')
 
 ORDERS_TABLE      = os.environ.get('ORDERS_TABLE',         'nimisha-orders')
 PRODUCTS_TABLE    = os.environ.get('PRODUCTS_TABLE',        'nimisha-products')
