@@ -35,6 +35,8 @@ locals {
   api_stage    = "prod"
 }
 
+data "aws_caller_identity" "current" {}
+
 # ================================================================
 # S3 BUCKET
 # ================================================================
@@ -348,7 +350,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
       {
         Effect   = "Allow"
         Action   = ["cloudfront:CreateInvalidation"]
-        Resource = "arn:aws:cloudfront::255325274897:distribution/E22P6B24TXTI9X"
+        Resource = "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${aws_cloudfront_distribution.website.id}"
       }
     ]
   })
