@@ -1,6 +1,36 @@
 @echo off
 setlocal EnableDelayedExpansion
 
+REM ================================================================
+REM  FRESH-ACCOUNT DEPLOY — read this if deploying to a new account
+REM
+REM  Before running this script for the first time on a new AWS account:
+REM
+REM  1. Configure AWS CLI with the new account credentials:
+REM       aws configure
+REM
+REM  2. Delete old state files (ONLY on first deploy):
+REM       del terraform.tfstate
+REM       del terraform.tfstate.backup
+REM
+REM  3. Create the ACM certificate and get the DNS validation CNAME:
+REM       terraform init
+REM       terraform apply -target=aws_acm_certificate.website
+REM
+REM  4. Copy the "certificate_validation_cname" output values.
+REM     Add that CNAME record in your domain registrar (GoDaddy, etc).
+REM
+REM  5. Wait for the cert status to become ISSUED (5-30 min):
+REM       aws acm describe-certificate --certificate-arn <arn> --region us-east-1 --query "Certificate.Status"
+REM
+REM  6. Once ISSUED, run this script:
+REM       .\deploy.bat
+REM
+REM  After first deploy, add a second CNAME in your registrar:
+REM    Name:  www
+REM    Value: <cloudfront_url output, without https://>
+REM ================================================================
+
 set PATH=C:\Program Files\Amazon\AWSCLIV2;%PATH%
 set REGION=ap-south-1
 set WEBSITE_DIR=..\..\website
