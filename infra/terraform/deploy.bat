@@ -153,7 +153,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-aws s3 sync C:\nimisha_deploy\ s3://!BUCKET!/ --region %REGION% --exclude "*.html"
+aws s3 sync C:\nimisha_deploy\ s3://!BUCKET!/images/ --region %REGION% --exclude "*.html" --exclude "*.bak"
 if errorlevel 1 (
     echo [ERROR] S3 assets upload failed.
     exit /b 1
