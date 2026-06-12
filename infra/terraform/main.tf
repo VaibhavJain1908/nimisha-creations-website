@@ -209,9 +209,9 @@ resource "aws_cloudfront_distribution" "website" {
   aliases = ["www.nimishacreations.in"]
 
   viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.website.arn
-    ssl_support_method             = "sni-only"
-    minimum_protocol_version       = "TLSv1.2_2021"
+    acm_certificate_arn      = aws_acm_certificate.website.arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   tags = { Project = local.project }
@@ -221,9 +221,9 @@ resource "aws_cloudfront_distribution" "website" {
 # DYNAMODB — ORDERS
 # ================================================================
 resource "aws_dynamodb_table" "orders" {
-  name           = local.orders_table
-  billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "order_id"
+  name         = local.orders_table
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "order_id"
 
   attribute {
     name = "order_id"
@@ -315,33 +315,33 @@ resource "aws_iam_role_policy" "lambda_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow"
-        Action = ["logs:CreateLogGroup","logs:CreateLogStream","logs:PutLogEvents"]
+        Effect   = "Allow"
+        Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
         Resource = "arn:aws:logs:*:*:*"
       },
       {
         Effect   = "Allow"
-        Action   = ["dynamodb:PutItem","dynamodb:GetItem","dynamodb:Scan","dynamodb:Query","dynamodb:UpdateItem","dynamodb:DeleteItem"]
+        Action   = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Scan", "dynamodb:Query", "dynamodb:UpdateItem", "dynamodb:DeleteItem"]
         Resource = aws_dynamodb_table.orders.arn
       },
       {
         Effect   = "Allow"
-        Action   = ["dynamodb:PutItem","dynamodb:GetItem","dynamodb:Scan","dynamodb:Query","dynamodb:UpdateItem","dynamodb:DeleteItem"]
+        Action   = ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Scan", "dynamodb:Query", "dynamodb:UpdateItem", "dynamodb:DeleteItem"]
         Resource = aws_dynamodb_table.products.arn
       },
       {
         Effect   = "Allow"
-        Action   = ["s3:PutObject","s3:GetObject","s3:DeleteObject"]
+        Action   = ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"]
         Resource = "${aws_s3_bucket.website.arn}/images/*"
       },
       {
         Effect   = "Allow"
-        Action   = ["ses:SendEmail","ses:SendRawEmail"]
+        Action   = ["ses:SendEmail", "ses:SendRawEmail"]
         Resource = "*"
       },
       {
-        Effect   = "Allow"
-        Action   = ["ssm:GetParameter"]
+        Effect = "Allow"
+        Action = ["ssm:GetParameter"]
         Resource = [
           aws_ssm_parameter.razorpay_key_id.arn,
           aws_ssm_parameter.razorpay_key_secret.arn,
@@ -377,16 +377,16 @@ resource "aws_lambda_function" "order_handler" {
 
   environment {
     variables = {
-      ORDERS_TABLE          = local.orders_table
-      PRODUCTS_TABLE        = "nimisha-products"
-      OWNER_EMAIL           = local.owner_email
-      SSM_KEY_ID_PARAM      = aws_ssm_parameter.razorpay_key_id.name
-      SSM_KEY_SECRET_PARAM  = aws_ssm_parameter.razorpay_key_secret.name
-      RAZORPAY_KEY_ID       = var.razorpay_key_id
-      RAZORPAY_KEY_SECRET   = var.razorpay_key_secret
-      AWS_REGION_NAME       = "ap-south-1"
-      S3_BUCKET             = local.bucket_name
-      ADMIN_UPLOAD_TOKEN    = "nimisha_upload_2025"
+      ORDERS_TABLE         = local.orders_table
+      PRODUCTS_TABLE       = "nimisha-products"
+      OWNER_EMAIL          = local.owner_email
+      SSM_KEY_ID_PARAM     = aws_ssm_parameter.razorpay_key_id.name
+      SSM_KEY_SECRET_PARAM = aws_ssm_parameter.razorpay_key_secret.name
+      RAZORPAY_KEY_ID      = var.razorpay_key_id
+      RAZORPAY_KEY_SECRET  = var.razorpay_key_secret
+      AWS_REGION_NAME      = "ap-south-1"
+      S3_BUCKET            = local.bucket_name
+      ADMIN_UPLOAD_TOKEN   = "nimisha_upload_2025"
       CF_DISTRIBUTION_ID   = aws_cloudfront_distribution.website.id
     }
   }
@@ -407,10 +407,10 @@ resource "aws_apigatewayv2_api" "api" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_headers  = ["Content-Type", "Authorization", "X-Admin-Token"]
-    allow_methods  = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    allow_origins  = ["*"]
-    max_age        = 300
+    allow_headers = ["Content-Type", "Authorization", "X-Admin-Token"]
+    allow_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_origins = ["*"]
+    max_age       = 300
   }
 }
 
@@ -426,11 +426,11 @@ resource "aws_apigatewayv2_stage" "prod" {
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.apigw_logs.arn
     format = jsonencode({
-      requestId = "$context.requestId"
-      sourceIp  = "$context.identity.sourceIp"
+      requestId  = "$context.requestId"
+      sourceIp   = "$context.identity.sourceIp"
       httpMethod = "$context.httpMethod"
-      routeKey  = "$context.routeKey"
-      status    = "$context.status"
+      routeKey   = "$context.routeKey"
+      status     = "$context.status"
     })
   }
 }
