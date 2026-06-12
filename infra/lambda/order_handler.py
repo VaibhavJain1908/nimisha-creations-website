@@ -19,10 +19,10 @@ PRODUCTS_TABLE    = os.environ.get('PRODUCTS_TABLE',        'nimisha-products')
 OWNER_EMAIL       = os.environ.get('OWNER_EMAIL',           'creationsnimisha51@gmail.com')
 SSM_KEY_ID_PARAM  = os.environ.get('SSM_KEY_ID_PARAM',     '/nimisha/razorpay/key_id')
 SSM_KEY_SECRET_PARAM = os.environ.get('SSM_KEY_SECRET_PARAM', '/nimisha/razorpay/key_secret')
-S3_BUCKET         = os.environ.get('S3_BUCKET',             'nimisha-creations-website-prod')
+S3_BUCKET         = os.environ.get('S3_BUCKET',             'nimisha-creations-web-2026')
 IMAGES_PREFIX  = 'images/'
 ADMIN_TOKEN    = os.environ.get('ADMIN_UPLOAD_TOKEN',   'nimisha_upload_2025')
-CF_DIST_ID     = os.environ.get('CF_DISTRIBUTION_ID',    'E22P6B24TXTI9X')
+CF_DIST_ID     = os.environ.get('CF_DISTRIBUTION_ID',    'E31JO85WH3B50C')
 
 # ── JSON helper — DynamoDB returns Decimal, JSON can't serialize it ─
 class DecimalEncoder(json.JSONEncoder):
@@ -295,7 +295,7 @@ def lambda_handler(event, context):
             return respond(400, {'error': 'Missing key'})
         try:
             cf = boto3.client('cloudfront')
-            dist_id = os.environ.get('CF_DISTRIBUTION_ID', 'E22P6B24TXTI9X')
+            dist_id = os.environ.get('CF_DISTRIBUTION_ID', 'E31JO85WH3B50C')
             print(f'Creating invalidation for key: {s3_key}, dist: {dist_id}')
             cf.create_invalidation(
                 DistributionId=dist_id,
