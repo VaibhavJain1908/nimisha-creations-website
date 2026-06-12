@@ -1061,16 +1061,9 @@ async function uploadBrandAsset(file,key,previewId){
     // Trigger CF invalidation (non-blocking)
     fetch(API+'/branding/invalidate',{method:'POST',headers:authH(),
       body:JSON.stringify({key:s3path,admin_token:ATOKEN})}).catch(function(){});
-    // Wait 3s then refresh preview via blob (bypasses CloudFront cache)
-    await new Promise(function(res){setTimeout(res,3000);});
+    // Show preview instantly from local file (avoids CloudFront cache delay)
     var preview=gel(previewId);
-    if(preview){
-      try{
-        var resp=await fetch(d.public_url,{cache:'no-store',headers:{'Pragma':'no-cache','Cache-Control':'no-cache'}});
-        var blob=await resp.blob();
-        preview.src=URL.createObjectURL(blob);
-      }catch(ex){preview.src=d.public_url+'?v='+Date.now();}
-    }
+    if(preview){preview.src=URL.createObjectURL(file);}
     statusEl.style.color='var(--green)';
     statusEl.textContent='✓ Updated! Changes live on site.';
     toast(key+' updated!','ok');

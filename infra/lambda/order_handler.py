@@ -183,7 +183,7 @@ def lambda_handler(event, context):
             key      = f"{IMAGES_PREFIX}{uuid.uuid4().hex}.{safe_ext}"
         presigned = s3.generate_presigned_url(
             'put_object',
-            Params={'Bucket': S3_BUCKET, 'Key': key, 'ContentType': content_type},
+            Params={'Bucket': S3_BUCKET, 'Key': key},
             ExpiresIn=300
         )
         public_url = f"https://www.nimishacreations.in/{key}"
