@@ -28,7 +28,7 @@ provider "aws" {
 
 locals {
   project      = "nimisha-creations"
-  bucket_name  = "nimisha-creations-website-prod"
+  bucket_name  = "nimisha-creations-web-2026"
   lambda_name  = "nimisha-order-handler"
   orders_table = "nimisha-orders"
   owner_email  = "creationsnimisha51@gmail.com"

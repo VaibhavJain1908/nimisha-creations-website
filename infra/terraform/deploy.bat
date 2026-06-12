@@ -34,7 +34,7 @@ REM ================================================================
 set PATH=C:\Program Files\Amazon\AWSCLIV2;%PATH%
 set REGION=ap-south-1
 set WEBSITE_DIR=..\..\website
-set BUCKET_NAME=nimisha-creations-website-prod
+set BUCKET_NAME=nimisha-creations-web-2026
 
 set CHECKPOINT_DISABLE=1
 set TF_PLUGIN_CACHE_DIR=%APPDATA%\terraform.d\plugin-cache
