@@ -7,3 +7,5 @@
 crash.log
 override.tf
 override.tf.json
+tfplan
+*.bak
