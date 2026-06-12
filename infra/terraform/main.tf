@@ -109,6 +109,17 @@ resource "aws_s3_bucket_policy" "website" {
   depends_on = [aws_cloudfront_distribution.website]
 }
 
+resource "aws_s3_bucket_cors_configuration" "website" {
+  bucket = aws_s3_bucket.website.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "PUT", "POST", "HEAD"]
+    allowed_origins = ["https://www.nimishacreations.in", "https://d364bu38892f8r.cloudfront.net"]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+}
 
 # ================================================================
 # CLOUDFRONT FUNCTION — URL rewriter (removes .html from URLs)
