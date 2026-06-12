@@ -134,6 +134,21 @@ resource "aws_cloudfront_function" "url_rewrite" {
 }
 
 # ================================================================
+# ACM CERTIFICATE — must be in us-east-1 for CloudFront
+# ================================================================
+resource "aws_acm_certificate" "website" {
+  provider          = aws.us_east_1
+  domain_name       = "www.nimishacreations.in"
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = { Project = local.project }
+}
+
+# ================================================================
 # CLOUDFRONT DISTRIBUTION
 # ================================================================
 resource "aws_cloudfront_distribution" "website" {
