@@ -477,6 +477,15 @@ output "cloudfront_url" {
   value = "https://${aws_cloudfront_distribution.website.domain_name}"
 }
 
+output "certificate_validation_cname" {
+  description = "Add this CNAME record in your domain registrar to validate the ACM certificate"
+  value = {
+    name  = tolist(aws_acm_certificate.website.domain_validation_options)[0].resource_record_name
+    value = tolist(aws_acm_certificate.website.domain_validation_options)[0].resource_record_value
+    type  = tolist(aws_acm_certificate.website.domain_validation_options)[0].resource_record_type
+  }
+}
+
 output "s3_bucket" {
   value = aws_s3_bucket.website.id
 }
