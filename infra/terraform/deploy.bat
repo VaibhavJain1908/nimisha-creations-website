@@ -147,12 +147,11 @@ if errorlevel 1 (
 )
 echo [OK] checkout.html patched.
 
-powershell -NoProfile -Command "(Get-Content 'C:\nimisha_deploy\admin.html' -Raw) -replace 'https://[a-z0-9]+\.execute-api\.ap-south-1\.amazonaws\.com/prod','!API_URL!' | Set-Content 'C:\nimisha_deploy\admin.html' -Encoding UTF8"
-if errorlevel 1 (
-    echo [ERROR] Failed to patch admin.html
-    exit /b 1
+for %%F in (admin.html shop.html index.html product.html) do (
+    powershell -NoProfile -Command "(Get-Content 'C:\nimisha_deploy\%%F' -Raw) -replace 'https://[a-z0-9]+\.execute-api\.ap-south-1\.amazonaws\.com/prod','!API_URL!' | Set-Content 'C:\nimisha_deploy\%%F' -Encoding UTF8"
+    if errorlevel 1 (echo [ERROR] Failed to patch %%F & exit /b 1)
+    echo [OK] %%F patched.
 )
-echo [OK] admin.html patched.
 
 aws s3 sync C:\nimisha_deploy\ s3://!BUCKET!/ --region %REGION% --delete --exclude "*" --include "*.html" --cache-control "max-age=300, must-revalidate" --content-type "text/html"
 if errorlevel 1 (
